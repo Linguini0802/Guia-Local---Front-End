@@ -1,0 +1,525 @@
+/* TOKENS */
+:root {
+    --azul: #1a6496; /* contraste 6,4:1 com branco (o antigo #2980b9 dava 4,3:1) */
+    --foco-claro: #1b4f72;
+    --foco-escuro: #f1c40f;
+}
+
+/* MÍDIA — regra universal: nenhuma imagem passa da caixa; vale p/ qualquer imagem futura */
+img, svg, video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* FOCO — visível para teclado; amarelo sobre fundos azuis, azul-escuro sobre fundos claros */
+a:focus-visible {
+    outline: 3px solid var(--foco-claro);
+    outline-offset: 2px;
+}
+
+.cabecalho a:focus-visible,
+.rodape a:focus-visible {
+    outline-color: var(--foco-escuro);
+}
+
+/* RESET BÁSICO */
+:where(body.home, body.detalhe) * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+/* CONFIG DO LAYOUT DE TODA A PÁGINA — base: 1 coluna, conteúdo antes da lateral */
+body.home {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, sans-serif;
+    color: #333;
+    display: grid;
+    grid-template-areas:
+        "topo"
+        "conteudo"
+        "lado"
+        "rodape";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto auto;
+    min-height: 100vh;
+}
+
+
+
+/* CABEÇALHO — base: título acima, menu embaixo */
+.cabecalho {
+    grid-area: topo;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem 1.5rem;
+    background: var(--azul);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+}
+
+.titulo-cabecalho {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.cidade {
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+.menu-lista {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.menu-lista li {
+    display: block;
+}
+
+.menu-lista a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 0.75rem;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+.menu-lista a:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.menu-lista a:focus {
+    outline: 2px solid #f1c40f;
+    outline-offset: 2px;
+}
+
+.menu-lista .ativo {
+    border-bottom: 3px solid #f1c40f;
+    border-radius: 0;
+}
+
+
+
+/* MENU LATERAL */
+.menu-lateral {
+    grid-area: lado;
+    background: #f0f4f8;
+    padding: 1.5rem 1rem;
+}
+
+.lateral-titulo {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--azul);
+    margin-bottom: 0.75rem;
+}
+
+.lateral-lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.lateral-lista a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+    color: #333;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.lateral-lista a:hover {
+    background: #dde7f0;
+}
+
+
+
+/* CONTEÚDO PRINCIPAL (MAIN) */
+main {
+    grid-area: conteudo;
+    background: #f8f9fa;
+}
+
+.titulo-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 35vh;
+    text-align: center;
+    padding: 1rem;
+}
+
+/* título fluido: cresce/encolhe com a largura, sem depender do tamanho do texto */
+.titulo-main div {
+    max-width: 40ch;
+}
+
+.titulo-main h1 {
+    font-size: clamp(1.5rem, 1rem + 2.5vw, 2.75rem);
+    line-height: 1.2;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+    margin-bottom: 0.5rem;
+}
+
+
+
+/* CARDS — Grid intrínseco: dois eixos, colunas se ajustam à largura e linhas ficam iguais */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.home .card {
+    background: #fff;
+    border: 1px solid #dde7f0;
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-wrap: anywhere;
+}
+
+.home .card a {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: inherit;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    padding-block: 0.6rem;
+    min-height: 44px;
+}
+
+/* card inteiro clicável (local com página): mesma aparência do card comum */
+.home .card a.card-link {
+    font-size: inherit;
+    font-weight: inherit;
+    margin-bottom: 0;
+    padding-block: 0;
+    min-height: 0;
+}
+
+.home .card .card-titulo {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+
+
+/* AGENDA — Flexbox em coluna: lista de um eixo só, cresce para baixo */
+.agenda {
+    padding: 1rem;
+}
+
+.titulo-agenda {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.lista-agenda {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.item-agenda {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+    background: #fff;
+    border-left: 4px solid var(--azul);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+}
+
+.item-agenda time {
+    font-weight: 700;
+    color: var(--azul);
+}
+
+
+
+/* RODAPÉ */
+.rodape {
+    grid-area: rodape;
+    background: var(--azul);
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+}
+
+
+
+/* HOME — a partir de 601px: lateral à esquerda, cabeçalho em linha */
+@media (min-width: 601px) {
+    body.home {
+        grid-template-areas:
+            "topo topo"
+            "lado conteudo"
+            "rodape rodape";
+        grid-template-columns: minmax(150px, 14rem) minmax(0, 1fr);
+        grid-template-rows: auto 1fr auto;
+    }
+
+    .cabecalho {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+
+
+/*PÁGINA DE DETALHE (body.detalhe) — reaproveita .cabecalho e .rodape da home*/
+
+body.detalhe {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, sans-serif;
+    color: #333;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Cabeçalho: centralizado na tela pequena */
+.detalhe .cabecalho {
+    align-items: center;
+    text-align: center;
+}
+
+.detalhe .menu-lista {
+    justify-content: center;
+}
+
+/* Rodapé escuro */
+.detalhe .rodape {
+    background: #333;
+    padding: 1.5rem 1rem;
+}
+
+/* Conteúdo: coluna única, cresce para empurrar o rodapé */
+.container-pagina {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Menu interno */
+.sub-menu {
+    background: #e8f0f7;
+    border-radius: 10px;
+    padding: 0.5rem 0.75rem;
+}
+
+.sub-menu ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 1rem;
+}
+
+.sub-menu a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 0.75rem;
+    color: var(--azul);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+.sub-menu a:hover {
+    background: #dde7f0;
+}
+
+.sub-menu a.voltar {
+    font-weight: 700;
+}
+
+.sub-menu a:focus-visible,
+.links a:focus-visible {
+    outline: 2px solid #f1c40f;
+    outline-offset: 2px;
+}
+
+.titulo-local {
+    text-align: center;
+    color: var(--azul);
+    font-size: clamp(1.5rem, 1rem + 2.5vw, 2.5rem);
+    line-height: 1.2;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+}
+
+/* Foto com legenda */
+.foto-local {
+    border: 3px solid var(--azul);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #e8f0f7;
+}
+
+.foto-local img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.foto-local figcaption {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Seções em cards */
+.detalhe .card {
+    background: #fff;
+    border: 1px solid #e3eaf1;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.detalhe .card h2 {
+    color: var(--azul);
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+}
+
+.detalhe .card p {
+    line-height: 1.6;
+}
+
+.detalhe .card blockquote {
+    margin-top: 1rem;
+    padding-left: 1rem;
+    border-left: 4px solid var(--azul);
+    color: #555;
+    line-height: 1.6;
+}
+
+.intro {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.att {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e3eaf1;
+    text-align: right;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Tabela — base: células compactas e palavras podem quebrar */
+.info {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.75rem;
+}
+
+.info th {
+    background: var(--azul);
+    color: #fff;
+    text-align: left;
+    padding: 0.6rem 0.5rem;
+    overflow-wrap: anywhere;
+}
+
+.info td {
+    padding: 0.6rem 0.5rem;
+    overflow-wrap: anywhere;
+}
+
+.info tbody tr:nth-child(even) {
+    background: #f5f5f5;
+}
+
+/* Listas */
+.detalhe .card ol,
+.lista-eventos {
+    padding-left: 1.5rem;
+    line-height: 1.6;
+}
+
+.lista-eventos {
+    list-style: disc;
+}
+
+.titulo-eventos {
+    font-weight: 700;
+}
+
+.links {
+    list-style: none;
+}
+
+.links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--azul);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.links a::after {
+    content: " →";
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+
+
+/* DETALHE — a partir de 420px: tabela com mais respiro */
+@media (min-width: 420px) {
+    .info th,
+    .info td {
+        padding: 0.8rem 1rem;
+    }
+}
+
+/* DETALHE — a partir de 601px: cabeçalho em linha (como na home) */
+@media (min-width: 601px) {
+    .detalhe .cabecalho {
+        text-align: left;
+    }
+
+    .detalhe .menu-lista {
+        justify-content: flex-start;
+    }
+}
